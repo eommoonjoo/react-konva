@@ -15,7 +15,10 @@ const RectComponent = ({ rectProps, isSelected, onSelect, onChange }) => {
   return (
     <React.Fragment>
       <Rect
-        onClick={onSelect}
+        onClick={(e) => {
+          e.cancelBubble = true; // This prevents the stage onClick event from firing when a rectangle is clicked
+          onSelect();
+        }}
         onTap={onSelect}
         ref={shapeRef}
         {...rectProps}
@@ -67,7 +70,14 @@ const App = () => {
 
   return (
     <div>
-      <Stage width={window.innerWidth} height={window.innerHeight}>
+      <Stage
+        width={window.innerWidth}
+        height={window.innerHeight}
+        onClick={() => {
+          // Reset the selected shape when the stage is clicked
+          selectShape(null);
+        }}
+      >
         <Layer>
           {rectangles.map((rect, i) => (
             <RectComponent
