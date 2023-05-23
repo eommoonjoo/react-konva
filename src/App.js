@@ -56,9 +56,13 @@ const App = () => {
   const [rectangles, setRectangles] = useState([]);
   const [selectedId, selectShape] = useState(null);
 
+  console.log("selectedId", selectedId);
+  console.log("rectangles", rectangles);
+
   const handleAddRect = () => {
     const newRect = {
-      id: rectangles.length + 1,
+      // id: rectangles.length + 1,
+      id: (Math.random() * 1000000).toFixed(0),
       x: Math.random() * 100,
       y: Math.random() * 100,
       width: 100,
@@ -66,6 +70,12 @@ const App = () => {
       fill: "green",
     };
     setRectangles([...rectangles, newRect]);
+  };
+
+  const handleRemoveRect = () => {
+    const newRects = rectangles.filter((r) => r.id !== selectedId);
+    setRectangles(newRects);
+    selectShape(null);
   };
 
   return (
@@ -97,6 +107,7 @@ const App = () => {
         </Layer>
       </Stage>
       <button onClick={handleAddRect}>Add Rectangle</button>
+      <button onClick={handleRemoveRect}>Remove Rectangle</button>
       {selectedId && (
         <div>
           <h2>Selected Rectangle ID: {selectedId}</h2>
